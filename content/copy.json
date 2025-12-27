@@ -1,0 +1,63 @@
+{
+  "idle": {
+    "headline": "You are never alone in a village.",
+    "subtext": "A gentle companion for connection, memory, and purpose.",
+    "primaryButton": "Begin a conversation"
+  },
+  "listening": {
+    "headline": "I'm here with you.",
+    "subtext": "Type a few words. You can cancel anytime.",
+    "sendButton": "Send",
+    "cancelButton": "Cancel"
+  },
+  "thinking": {
+    "headline": "One moment.",
+    "subtext": "I'm gathering my thoughts with care.",
+    "cancelButton": "Cancel"
+  },
+  "speaking": {
+    "headline": "Emberly",
+    "continueButton": "Continue",
+    "replayButton": "Replay"
+  },
+  "error": {
+    "headline": "That didn't go through.",
+    "subtext": "Nothing was saved. Would you like to try again?",
+    "tryAgainButton": "Try again",
+    "backButton": "Back"
+  },
+  "canceled": {
+    "headline": "Okay.",
+    "subtext": "Your words weren't saved.",
+    "backButton": "Back"
+  },
+  "footer": {
+    "brandAnchor": "You are never alone in a village.",
+    "privacyLink": "Privacy",
+    "guideLink": "Guide",
+    "contactLink": "Contact"
+  },
+  "constellation": {
+    "title": "Sample constellation",
+    "saveToggle": "Save this to my constellation (on this device)",
+    "saveToggleDisabled": "Demo only - Saving is coming soon",
+    "clearButton": "Clear constellation"
+  },
+  "pages": {
+    "privacy": {
+      "title": "Privacy",
+      "content": "Privacy policy content goes here.",
+      "medicalDisclaimer": "Hello Emberly is not a medical product, therapy tool, or medical device. It does not provide medical advice, diagnosis, or treatment. If you have medical concerns, please consult with a qualified healthcare professional."
+    },
+    "guide": {
+      "title": "Guide",
+      "content": "User guide content goes here.",
+      "medicalDisclaimer": "Hello Emberly is a companion for connection and reflection. It is not a medical product, therapy tool, or medical device. It does not provide medical advice, diagnosis, or treatment. If you have medical concerns, please consult with a qualified healthcare professional."
+    },
+    "contact": {
+      "title": "Contact",
+      "content": "Contact information goes here."
+    }
+  }
+}
+
