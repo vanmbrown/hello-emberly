@@ -6,6 +6,30 @@ test.describe('Hello Emberly E2E Smoke Tests', () => {
   });
 
   test('idle → listening → thinking → speaking → continue', async ({ page }) => {
+    // Mock API to return successful response
+    await page.route('**/v1/respond', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          assistant_message_id: 'test-msg-1',
+          text: 'This is a test response from the mocked API.',
+          policy: { flags: [] },
+        }),
+      });
+    });
+    await page.route('**/v1/voice/sessions/**/respond', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          assistant_message_id: 'test-msg-1',
+          text: 'This is a test response from the mocked API.',
+          policy: { flags: [] },
+        }),
+      });
+    });
+
     // Start from idle state
     await expect(page.getByRole('heading', { name: /You are never alone in a village/i })).toBeVisible();
     
@@ -23,31 +47,15 @@ test.describe('Hello Emberly E2E Smoke Tests', () => {
     // Should transition to thinking state
     await expect(page.getByRole('heading', { name: /One moment/i })).toBeVisible();
     
-    // Note: In a real test, we'd mock the API response
-    // For now, we'll wait a bit and check if we transition to speaking or error
-    // This test assumes API works - in practice you'd mock it
+    // Should transition to speaking state with mocked response
+    await expect(page.getByRole('heading', { name: /Emberly/i })).toBeVisible();
+    await expect(page.getByText(/This is a test response from the mocked API/i)).toBeVisible();
     
-    // Wait for either speaking or error state
-    await page.waitForTimeout(2000);
+    // Test continue
+    await page.getByRole('button', { name: /Continue/i }).click();
     
-    const speakingHeading = page.getByRole('heading', { name: /Emberly/i });
-    const errorHeading = page.getByRole('heading', { name: /That didn't go through/i });
-    
-    // Check if we're in speaking state (API succeeded) or error (API failed)
-    const isSpeaking = await speakingHeading.isVisible().catch(() => false);
-    const isError = await errorHeading.isVisible().catch(() => false);
-    
-    if (isSpeaking) {
-      // If speaking, test continue
-      await expect(speakingHeading).toBeVisible();
-      await page.getByRole('button', { name: /Continue/i }).click();
-      
-      // Should return to listening
-      await expect(page.getByRole('heading', { name: /I'm here with you/i })).toBeVisible();
-    } else if (isError) {
-      // If error, that's also a valid flow to test
-      await expect(errorHeading).toBeVisible();
-    }
+    // Should return to listening
+    await expect(page.getByRole('heading', { name: /I'm here with you/i })).toBeVisible();
   });
 
   test('cancel in listening', async ({ page }) => {

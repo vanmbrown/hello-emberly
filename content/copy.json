@@ -8,7 +8,8 @@
     "headline": "I'm here with you.",
     "subtext": "Type a few words. You can cancel anytime.",
     "sendButton": "Send",
-    "cancelButton": "Cancel"
+    "cancelButton": "Cancel",
+    "textareaPlaceholder": "Type your message here..."
   },
   "thinking": {
     "headline": "One moment.",
@@ -41,7 +42,16 @@
     "title": "Sample constellation",
     "saveToggle": "Save this to my constellation (on this device)",
     "saveToggleDisabled": "Demo only - Saving is coming soon",
-    "clearButton": "Clear constellation"
+    "clearButton": "Clear constellation",
+    "loading": "Loading...",
+    "empty": "No constellation nodes yet."
+  },
+  "settings": {
+    "title": "Settings",
+    "constellationLabel": "Constellation",
+    "closeButton": "Close",
+    "clearingButton": "Clearing...",
+    "clearingStubNote": "(Clearing is stubbed for Sprint 1)"
   },
   "pages": {
     "privacy": {

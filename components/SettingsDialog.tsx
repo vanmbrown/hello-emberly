@@ -58,21 +58,21 @@ export default function SettingsDialog({ isOpen, onClose }: SettingsDialogProps)
         aria-labelledby="settings-title"
       >
         <h2 id="settings-title" className="text-2xl font-light mb-6">
-          Settings
+          {copy.settings.title}
         </h2>
 
         <div className="space-y-4">
           <div>
-            <h3 className="font-medium mb-2">Constellation</h3>
+            <h3 className="font-medium mb-2">{copy.settings.constellationLabel}</h3>
             <button
               onClick={handleClearConstellation}
               disabled={isClearing}
               className="px-4 py-2 border border-foreground/20 rounded-lg hover:bg-foreground/5 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2"
             >
-              {isClearing ? 'Clearing...' : copy.constellation.clearButton}
+              {isClearing ? copy.settings.clearingButton : copy.constellation.clearButton}
             </button>
             <p className="text-xs text-foreground/50 mt-2">
-              (Clearing is stubbed for Sprint 1)
+              {copy.settings.clearingStubNote}
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function SettingsDialog({ isOpen, onClose }: SettingsDialogProps)
             onClick={onClose}
             className="px-6 py-2 bg-foreground text-background rounded-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2"
           >
-            Close
+            {copy.settings.closeButton}
           </button>
         </div>
       </div>

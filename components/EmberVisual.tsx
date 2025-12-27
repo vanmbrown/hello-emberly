@@ -1,16 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { prefersReducedMotion, configureGSAPForReducedMotion } from '@/lib/a11y';
+import { prefersReducedMotion } from '@/lib/a11y';
 
 export default function EmberVisual() {
   const containerRef = useRef<HTMLDivElement>(null);
   const hasReducedMotion = prefersReducedMotion();
 
   useEffect(() => {
+    // Check prefersReducedMotion() before starting any animations
+    // If reduced motion is enabled, animations should not start
     if (hasReducedMotion) {
-      configureGSAPForReducedMotion();
-      return;
+      return; // Don't start animations
     }
 
     // GSAP animation would go here

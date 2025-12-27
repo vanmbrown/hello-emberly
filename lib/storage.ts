@@ -53,7 +53,7 @@ export async function getConstellationNodes(): Promise<ConstellationNode[]> {
  */
 export async function saveConstellationNode(node: Omit<ConstellationNode, 'id' | 'created_at'>): Promise<void> {
   // Stub: no real saving in Sprint 1
-  console.log('[Storage] Save node (stubbed):', node);
+  console.log('[Storage] Save node (stub)');
   return Promise.resolve();
 }
 
@@ -63,7 +63,7 @@ export async function saveConstellationNode(node: Omit<ConstellationNode, 'id' |
  */
 export async function deleteConstellationNode(nodeId: string): Promise<void> {
   // Stub: no real deletion in Sprint 1
-  console.log('[Storage] Delete node (stubbed):', nodeId);
+  console.log('[Storage] Delete node (stub)');
   return Promise.resolve();
 }
 

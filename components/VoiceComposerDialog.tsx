@@ -44,8 +44,9 @@ export default function VoiceComposerDialog({ isOpen, onClose }: VoiceComposerDi
     escHandlerCleanupRef.current = createEscHandler(() => {
       if (state === 'listening' || state === 'thinking') {
         dispatch('CANCEL');
+        // Keep dialog open to show canceled state
       }
-      onClose();
+      // ESC does not close dialog - only BACK from canceled/error closes it
     });
 
     // Focus textarea when listening
@@ -92,7 +93,7 @@ export default function VoiceComposerDialog({ isOpen, onClose }: VoiceComposerDi
 
   const handleCancel = () => {
     dispatch('CANCEL');
-    onClose();
+    // Keep dialog open to show canceled state - only BACK closes it
   };
 
   const handleBack = () => {
@@ -150,7 +151,7 @@ export default function VoiceComposerDialog({ isOpen, onClose }: VoiceComposerDi
                   handleSubmit();
                 }
               }}
-              placeholder="Type your message here..."
+              placeholder={copy.listening.textareaPlaceholder}
               className="w-full min-h-[120px] p-4 border border-foreground/20 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-foreground focus:border-transparent mb-4"
             />
             <div className="flex gap-4 justify-end">

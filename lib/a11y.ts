@@ -113,11 +113,22 @@ export function configureLenisForReducedMotion(lenisInstance: any): void {
 }
 
 /**
- * Disable GSAP animations if reduced motion is preferred.
+ * Check if animations should be disabled due to reduced motion preference.
+ * Components should call this before starting any animations.
+ * 
+ * @returns true if animations should be disabled
+ */
+export function shouldDisableAnimations(): boolean {
+  return prefersReducedMotion();
+}
+
+/**
+ * @deprecated Use shouldDisableAnimations() instead. Components should check
+ * prefersReducedMotion() before starting animations rather than relying on
+ * window.gsap being available.
  */
 export function configureGSAPForReducedMotion(): void {
-  if (prefersReducedMotion() && typeof window !== 'undefined' && (window as any).gsap) {
-    (window as any).gsap.globalTimeline.timeScale(0);
-  }
+  // No-op: Components should check prefersReducedMotion() before starting animations
+  // This avoids dependency on window.gsap in Next.js module imports
 }
 

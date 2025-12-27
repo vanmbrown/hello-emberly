@@ -19,7 +19,7 @@ export default function Constellation() {
     return (
       <div className="p-6">
         <h2 className="text-2xl font-light mb-4">{copy.constellation.title}</h2>
-        <p className="text-foreground/60">Loading...</p>
+        <p className="text-foreground/60">{copy.constellation.loading}</p>
       </div>
     );
   }
@@ -29,7 +29,7 @@ export default function Constellation() {
       <h2 className="text-2xl font-light mb-4">{copy.constellation.title}</h2>
       
       {nodes.length === 0 ? (
-        <p className="text-foreground/60">No constellation nodes yet.</p>
+        <p className="text-foreground/60">{copy.constellation.empty}</p>
       ) : (
         <div className="space-y-4">
           {nodes.map((node) => (

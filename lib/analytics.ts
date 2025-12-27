@@ -15,7 +15,8 @@ type AllowedProps = {
   state?: string;
   previousState?: string;
   event?: string;
-  [key: string]: string | number | boolean | undefined;
+  result?: 'ok' | 'fail';
+  reason?: 'cancel' | 'esc' | 'abort';
 };
 
 /**
@@ -39,19 +40,36 @@ export function emit(eventName: string, props?: Record<string, any>): void {
     return;
   }
 
-  // Sanitize props - only allow semantic data
+  // Sanitize props - strict allowlist of keys only
   const sanitizedProps: AllowedProps = {};
   if (props) {
+    // Allowed keys only
+    const allowedKeys: (keyof AllowedProps)[] = [
+      'timestamp',
+      'state',
+      'previousState',
+      'event',
+      'result',
+      'reason',
+    ];
+
     for (const [key, value] of Object.entries(props)) {
-      // Only allow: timestamps, state names, booleans, enums
-      if (
-        typeof value === 'number' ||
-        typeof value === 'boolean' ||
-        (typeof value === 'string' && value.length < 50) // Short strings only (state names, enums)
-      ) {
+      if (!allowedKeys.includes(key as keyof AllowedProps)) {
+        console.warn(`Analytics: Blocked prop "${key}" - not in allowlist`);
+        continue;
+      }
+
+      // Validate value types and enum values
+      if (key === 'timestamp' && typeof value === 'number') {
+        sanitizedProps.timestamp = value;
+      } else if ((key === 'state' || key === 'previousState' || key === 'event') && typeof value === 'string') {
         sanitizedProps[key] = value;
+      } else if (key === 'result' && (value === 'ok' || value === 'fail')) {
+        sanitizedProps.result = value;
+      } else if (key === 'reason' && (value === 'cancel' || value === 'esc' || value === 'abort')) {
+        sanitizedProps.reason = value;
       } else {
-        console.warn(`Analytics: Blocked prop "${key}" - contains non-semantic data`);
+        console.warn(`Analytics: Blocked prop "${key}" - invalid type or enum value`);
       }
     }
   }
