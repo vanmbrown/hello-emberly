@@ -46,14 +46,32 @@ The backend at `api.helloemberly.com` should be configured with:
 - Respond to `OPTIONS` requests with `200` or `204`
 - Include all required `Access-Control-*` headers
 
+## Environment Toggle (Kill-Switch)
+
+The proxy can be disabled via environment variable:
+
+**Enable proxy (default):**
+```
+NEXT_PUBLIC_USE_API_PROXY=true
+```
+or omit the variable (defaults to true)
+
+**Disable proxy (use direct API calls):**
+```
+NEXT_PUBLIC_USE_API_PROXY=false
+```
+
+When disabled, the API client will call `api.helloemberly.com` directly. This requires backend CORS to be configured.
+
 ## Removal Plan
 
 Once backend CORS is configured:
 
-1. Revert `lib/api.ts` to use `API_BASE_URL` directly
-2. Delete the proxy routes in `/app/api/v1/`
-3. Test that direct API calls work from the browser
-4. Remove this documentation file
+1. Set `NEXT_PUBLIC_USE_API_PROXY=false` in Vercel environment variables
+2. Test that direct API calls work from the browser (no CORS errors)
+3. Delete the proxy routes in `/app/api/v1/`
+4. Remove proxy toggle logic from `lib/api.ts`
+5. Remove this documentation file
 
 ## Testing
 

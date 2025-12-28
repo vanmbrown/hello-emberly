@@ -2,14 +2,21 @@
  * API client for Hello Emberly.
  * Handles session-based requests with fallback to direct endpoint.
  * 
- * Uses Next.js API proxy routes to avoid CORS issues.
+ * Uses Next.js API proxy routes to avoid CORS issues when enabled.
  * This is a temporary solution until backend CORS is configured.
+ * 
+ * Kill-switch: Set NEXT_PUBLIC_USE_API_PROXY=false to revert to direct API calls
+ * once backend CORS is configured.
  */
 
-// Use Next.js API proxy routes (same origin, no CORS)
+const USE_API_PROXY = process.env.NEXT_PUBLIC_USE_API_PROXY !== 'false'; // Default to true
 const PROXY_BASE_URL = '/api';
-// Keep original API URL for reference (used by proxy routes server-side)
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.helloemberly.com';
+
+// Determine base URL based on proxy toggle
+function getBaseUrl(): string {
+  return USE_API_PROXY ? PROXY_BASE_URL : API_BASE_URL;
+}
 
 export interface SessionResponse {
   session_id: string;
@@ -55,8 +62,8 @@ class ApiClient {
     this.correlationId = this.generateCorrelationId();
 
     try {
-      // Use Next.js API proxy to avoid CORS
-      const response = await fetch(`${PROXY_BASE_URL}/v1/voice/sessions`, {
+      // Use proxy or direct API based on environment toggle
+      const response = await fetch(`${getBaseUrl()}/v1/voice/sessions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,12 +116,13 @@ class ApiClient {
     };
 
     let url: string;
+    const baseUrl = getBaseUrl();
     if (this.useFallback || !this.sessionId) {
-      // Use fallback endpoint (via proxy)
-      url = `${PROXY_BASE_URL}/v1/respond`;
+      // Use fallback endpoint
+      url = `${baseUrl}/v1/respond`;
     } else {
-      // Use session endpoint (via proxy)
-      url = `${PROXY_BASE_URL}/v1/voice/sessions/${this.sessionId}/respond`;
+      // Use session endpoint
+      url = `${baseUrl}/v1/voice/sessions/${this.sessionId}/respond`;
     }
 
     const response = await fetch(url, {
