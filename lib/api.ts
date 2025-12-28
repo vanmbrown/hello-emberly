@@ -1,8 +1,14 @@
 /**
  * API client for Hello Emberly.
  * Handles session-based requests with fallback to direct endpoint.
+ * 
+ * Uses Next.js API proxy routes to avoid CORS issues.
+ * This is a temporary solution until backend CORS is configured.
  */
 
+// Use Next.js API proxy routes (same origin, no CORS)
+const PROXY_BASE_URL = '/api';
+// Keep original API URL for reference (used by proxy routes server-side)
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.helloemberly.com';
 
 export interface SessionResponse {
@@ -49,7 +55,8 @@ class ApiClient {
     this.correlationId = this.generateCorrelationId();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/v1/voice/sessions`, {
+      // Use Next.js API proxy to avoid CORS
+      const response = await fetch(`${PROXY_BASE_URL}/v1/voice/sessions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -103,11 +110,11 @@ class ApiClient {
 
     let url: string;
     if (this.useFallback || !this.sessionId) {
-      // Use fallback endpoint
-      url = `${API_BASE_URL}/v1/respond`;
+      // Use fallback endpoint (via proxy)
+      url = `${PROXY_BASE_URL}/v1/respond`;
     } else {
-      // Use session endpoint
-      url = `${API_BASE_URL}/v1/voice/sessions/${this.sessionId}/respond`;
+      // Use session endpoint (via proxy)
+      url = `${PROXY_BASE_URL}/v1/voice/sessions/${this.sessionId}/respond`;
     }
 
     const response = await fetch(url, {
