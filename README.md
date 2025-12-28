@@ -100,6 +100,16 @@ Coming in Sprint 2:
 - Full CRUD for constellation nodes
 - Additional features
 
+## Backend Integration
+
+**Status:** Frontend Sprint 1 is complete. Backend integration is pending.
+
+See [`docs/BACKEND_API_SPECIFICATION.md`](./docs/BACKEND_API_SPECIFICATION.md) for:
+- Expected API endpoint specifications
+- Request/response formats
+- Authentication requirements (TBD)
+- Testing checklist for backend team
+
 ## License
 
 Private - All rights reserved.
